@@ -1,0 +1,4 @@
+webserver1 ansible_user=tarandeepextramarks ansible_host=10.128.0.2
+
+[web]
+webserver1

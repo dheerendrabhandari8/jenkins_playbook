@@ -1,0 +1,2 @@
+jenkins_job_name: "my-dsl-job"
+jenkinsfile_path: "/path/to/Jenkinsfile"

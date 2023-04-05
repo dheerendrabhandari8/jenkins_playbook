@@ -1,0 +1,12 @@
+---
+# vars file for jenkins-role
+jenkins_apt_repo: deb https://pkg.jenkins.io/debian binary/
+jenkins_repo_key: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+jenkins_pkg_url: https://pkg.jenkins.io/debian-stable/binary
+jenkins_package_state: present
+jenkins_jar_location: /opt/jenkins-cli.jar
+jenkins_base_url: "http://43.206.215.155:8080"
+jenkins_url: "{{ jenkins_base_url }}"
+jenkins_home: /var/lib/jenkins
+packages:
+  - openjdk-11-jdk

@@ -1,0 +1,15 @@
+---
+- name: Add vars file
+  include_vars: Plugin-vars.yml
+  
+- name: Install the plugin
+  jenkins_plugin:
+    name: "{{ item }}"
+    state: latest
+    url: "http://10.190.0.3:8080/"
+    url_username: "admin"
+    url_password: "password"
+  with_items: "{{ jenkins_plugins }}"
+  notify: restart jenkins
+
+ 

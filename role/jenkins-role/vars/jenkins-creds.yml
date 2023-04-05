@@ -1,0 +1,8 @@
+jenkins_credentials:
+      - username: tarandeep.singh.snaatak
+        password: noida@1234
+        description: "My Username/Password Credential 1"
+        id: "taran-token"
+        type: "Username with password"
+        scope: "GLOBAL"
+      

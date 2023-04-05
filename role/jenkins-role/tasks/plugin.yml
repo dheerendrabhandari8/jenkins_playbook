@@ -1,0 +1,29 @@
+---
+- name: Add vars file
+  include_vars: Plugin-vars.yml
+
+- name: Initiliazing admin-password Script
+  template:
+    src: "initial-setup.groovy"
+    dest: "{{ jenkins_home }}/init.groovy.d/admin-password.groovy"
+    owner: jenkins
+    group: jenkins
+    mode: 0775
+  register: jenkins_admin_script
+
+- name: Restart jenkins
+  service:
+    name: jenkins
+    state: restarted
+  when: jenkins_admin_script.changed  
+
+- name: Install Jenkins plugins
+  jenkins_plugin:
+    name: "{{ item }}"
+    url_username: taran
+    url_password: e6901611130b429587bcaf247d58ec7a
+    url: http://13.114.188.64:8080/
+    timeout: 90
+    state: latest
+  with_items: "{{ jenkins_plugins }}"
+  notify: restart jenkins

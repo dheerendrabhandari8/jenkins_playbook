@@ -1,0 +1,52 @@
+---
+# tasks file for jenkins-role
+- name: Adding the user 'jenkins'
+  user:
+    name: jenkins
+
+- name: Adding the group 'jenkins'
+  group:
+    name: jenkins 
+
+- name: Update APT package manager repositories cache
+  apt:
+    update_cache: yes
+
+- include_vars: Debian-vars.yml
+
+- name: Ensuring "{{ packages }}" is installed
+  apt:
+    name: "{{ packages }}"
+    state: present   
+
+- include_tasks: Debian-setup.yml
+  when: ansible_os_family == 'Debian'  
+
+- include_tasks: RedHat-setup.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: creating init.groovy.d
+  file:
+    path: "{{ jenkins_home }}/init.groovy.d"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: Initiliazing Init Script
+  template:
+    src: "initial-setup.groovy"
+    dest: "{{ jenkins_home }}/init.groovy.d/initial-setup.groovy"
+    owner: jenkins
+    group: jenkins
+    mode: 0775
+  register: jenkins_init_script
+
+- name: Restart jenkins
+  service:
+    name: jenkins
+    state: restarted
+  when: jenkins_init_script.changed      
+
+- include_tasks: plugin-new.yml
+

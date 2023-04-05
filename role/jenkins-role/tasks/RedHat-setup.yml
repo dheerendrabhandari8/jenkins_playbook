@@ -1,0 +1,30 @@
+---
+- name: Add vars file
+  include_vars: RedHat-vars.yml
+
+- name: Ensure Jenkins repo is installed
+  get_url:
+    url: "{{ jenkins_repo_url }}"
+    dest: /etc/yum.repos.d/jenkins.repo
+
+- name: Adding Jenkins repo GPG key
+  rpm_key:
+    state: present
+    key: "{{ jenkins_repo_key_url }}"
+
+- name: Downloading specific Jenkins version
+  get_url:
+    url: "{{ jenkins_pkg_url }}/jenkins-{{ jenkins_version }}-1.1.noarch.rpm"
+    dest: "/tmp/jenkins-{{ jenkins_version }}-1.1.noarch.rpm"
+  when: jenkins_version is defined
+
+- name: Installing specific version of Jenkins.
+  package:
+    name: "/tmp/jenkins-{{ jenkins_version }}-1.1.noarch.rpm"
+    state: present
+  when: jenkins_version is defined
+
+- name: Ensure Jenkins is installed.
+  package:
+    name: jenkins
+    state: "{{ jenkins_package_state }}"

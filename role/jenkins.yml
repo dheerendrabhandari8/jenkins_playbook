@@ -1,0 +1,5 @@
+- hosts: web
+  user: ubuntu
+  become: yes
+  roles:
+     - jenkins-role
